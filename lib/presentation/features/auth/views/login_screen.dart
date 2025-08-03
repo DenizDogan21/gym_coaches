@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gym_coaches/core/constants/app_constants.dart';
 import 'package:gym_coaches/presentation/common/widgets/custom_button.dart';
 import 'package:gym_coaches/presentation/common/widgets/custom_text_field.dart';
+import 'package:gym_coaches/routes.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -101,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       /// Giriş Yap Butonu
                       CustomButton(
                         text: 'Giriş Yap',
-                        // isLoading: loginState.isLoading,
+                        isLoading: loginState.isLoading,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             ref
@@ -121,12 +124,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.goNamed(AppRoutes.forgotPassword);
+                            },
                             child: const Text("Şifremi Unuttum"),
                           ),
                           const SizedBox(width: 16),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.goNamed(AppRoutes.register);
+                            },
                             child: const Text("Kayıt Ol"),
                           ),
                         ],
