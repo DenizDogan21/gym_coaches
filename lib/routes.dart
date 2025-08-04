@@ -35,6 +35,12 @@ final router = GoRouter(
       name: 'register',
       builder: (context, state) => const PlaceholderScreen(screenName: 'Register'),
     ),
+    GoRoute(
+  path: '/forgot-password',
+  name: 'forgotPassword',
+  builder: (context, state) => const PlaceholderScreen(screenName: 'Forgot Password '),
+),
+
 
     // Ana ekran ve alt ekranları
     GoRoute(
@@ -89,6 +95,7 @@ class AppRoutes {
   static const String splash = 'splash';
   static const String login = 'login';
   static const String register = 'register';
+  static const String forgotPassword = 'forgotPassword';
   static const String home = 'home';
   static const String studentList = 'studentList';
   static const String studentDetail = 'studentDetail';
