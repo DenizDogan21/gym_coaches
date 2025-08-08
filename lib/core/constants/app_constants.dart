@@ -5,9 +5,9 @@ class AppConstants {
 
   // UI Sabitleri
   static const double defaultPadding = 16.0;
-  static const double smallPadding = 1.0;
-  static const double mediumPadding = 16.0;
-  static const double largePadding = 24.0;
+  static const double smallPadding = 5.0;
+  static const double mediumPadding = 18.0;
+  static const double largePadding = 30.0;
   static const double defaultRadius = 8.0;
   static const double cardRadius = 12.0;
 

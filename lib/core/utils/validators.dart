@@ -45,7 +45,9 @@ class Validators {
       return null; // İsteğe bağlı
     }
 
-    if (!RegExp(r'^\d{10,11}$').hasMatch(value.replaceAll(RegExp(r'[^\d]'), ''))) {
+    if (!RegExp(
+      r'^\d{10,11}$',
+    ).hasMatch(value.replaceAll(RegExp(r'[^\d]'), ''))) {
       return 'Geçerli bir telefon numarası girin';
     }
 
@@ -75,7 +77,10 @@ class Validators {
   }
 
   /// İki şifrenin eşleşme kontrolü
-  static String? validatePasswordMatch(String? password, String? confirmPassword) {
+  static String? validatePasswordMatch(
+    String? password,
+    String? confirmPassword,
+  ) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
       return 'Şifre tekrar alanı boş bırakılamaz';
     }

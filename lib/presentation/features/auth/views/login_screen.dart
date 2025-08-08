@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_coaches/core/constants/app_constants.dart';
+import 'package:gym_coaches/core/utils/validators.dart';
 import 'package:gym_coaches/presentation/common/widgets/custom_button.dart';
 import 'package:gym_coaches/presentation/common/widgets/custom_text_field.dart';
+import 'package:gym_coaches/presentation/features/auth/viewmodels/auth_viewmodel.dart';
 import 'package:gym_coaches/routes.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -17,23 +18,44 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
-  bool _obscurePassword = false;
+  bool _obscurePassword = true;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
 
-    final loginState = ref.watch(loginControllerProvider);
+    final viewModel = ref.read(authViewModelProvider.notifier);
+    final authState = ref.watch(authViewModelProvider);
+
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) {
+      if (next.errorMessage != null && next.errorMessage!.isNotEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.errorMessage!)));
+      }
+      if (!next.isLoading && next.isAuthenticated) {
+        context.goNamed(AppRoutes.dashboard);
+      }
+    });
 
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
+          double horizontalPadding = size.width * 0.08;
+          double maxFormWidth = 500;
+
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(AppConstants.largePadding),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding.clamp(16, 40), // min/max sınır
+              vertical: 24,
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                  maxWidth: maxFormWidth,
+                ),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -42,84 +64,55 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Text(
                         "Giriş Yap",
                         style: theme.textTheme.headlineLarge?.copyWith(
+                          fontSize:
+                              size.width < 360 ? 22 : 28, // mobilde küçült
                           color: theme.colorScheme.primary,
                         ),
                       ),
+                      SizedBox(height: size.height * 0.02),
 
-                      const SizedBox(height: AppConstants.mediumPadding),
-
-                      /// Email
                       CustomTextField(
                         controller: _emailController,
                         hintText: "E-posta",
                         keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppConstants.emptyEmailError;
-                          }
-                          if (!value.contains("@")) {
-                            return AppConstants.invalidEmailError;
-                          }
-                          return null;
-                        },
+                        validator: Validators.validateEmail,
                       ),
-                      const SizedBox(height: AppConstants.smallPadding),
+                      SizedBox(height: size.height * 0.015),
 
-                      /// Şifreyi göster/gizle
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
+                      CustomTextField(
+                        controller: _passwordController,
+                        hintText: "Şifre",
+                        obscureText: _obscurePassword,
+                        validator: Validators.validatePassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
                             });
                           },
-                          child: Text(
-                            _obscurePassword
-                                ? 'Şifreyi Göster'
-                                : 'Şifreyi Gizle',
-                          ),
                         ),
                       ),
-                      const SizedBox(height: AppConstants.smallPadding),
+                      SizedBox(height: size.height * 0.03),
 
-                      /// Şifre
-                      CustomTextField(
-                        controller: _passwordController,
-                        hintText: "Şifre",
-                        obscureText: _obscurePassword,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppConstants.emptyPasswordError;
-                          }
-                          if (value.length < 6) {
-                            return AppConstants.shortPasswordError;
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const SizedBox(height: AppConstants.mediumPadding),
-
-                      /// Giriş Yap Butonu
                       CustomButton(
                         text: 'Giriş Yap',
-                        isLoading: loginState.isLoading,
+                        isLoading: authState.isLoading,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            ref
-                                .read(loginControllerProvider.notifier)
-                                .login(
-                                  _emailController.text.trim(),
-                                  _passwordController.text.trim(),
-                                );
+                            final email = _emailController.text.trim();
+                            final password = _passwordController.text.trim();
+                            viewModel.signIn(email, password);
                           }
                         },
                       ),
 
-                      const SizedBox(height: AppConstants.mediumPadding),
+                      SizedBox(height: size.height * 0.03),
 
-                      /// Alt Linkler
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

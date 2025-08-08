@@ -13,9 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Firebase'i başlat
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Crashlytics konfigürasyonu
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
@@ -26,9 +24,7 @@ void main() async {
   // Riverpod ile uygulamayı başlat
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPrefsProvider.overrideWithValue(sharedPrefs),
-      ],
+      overrides: [sharedPrefsProvider.overrideWithValue(sharedPrefs)],
       child: const GymCoachesApp(),
     ),
   );
