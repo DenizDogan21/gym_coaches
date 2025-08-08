@@ -1,6 +1,5 @@
-import '../../domain/entities/trainer_entity.dart';
-// Timestap için import edilmeli
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../domain/entities/trainer_entity.dart';
 
 class TrainerModel extends TrainerEntity {
   const TrainerModel({
@@ -8,6 +7,8 @@ class TrainerModel extends TrainerEntity {
     required String name,
     required String email,
     String? photoUrl,
+    String? phoneNumber,  // Eklendi
+    String? address,      // Eklendi
     List<String>? studentIds,
     required DateTime createdAt,
     DateTime? updatedAt,
@@ -16,6 +17,8 @@ class TrainerModel extends TrainerEntity {
     name: name,
     email: email,
     photoUrl: photoUrl,
+    phoneNumber: phoneNumber,  // Eklendi
+    address: address,          // Eklendi
     studentIds: studentIds,
     createdAt: createdAt,
     updatedAt: updatedAt,
@@ -28,6 +31,8 @@ class TrainerModel extends TrainerEntity {
       name: entity.name,
       email: entity.email,
       photoUrl: entity.photoUrl,
+      phoneNumber: entity.phoneNumber,  // Eklendi
+      address: entity.address,          // Eklendi
       studentIds: entity.studentIds,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -41,6 +46,8 @@ class TrainerModel extends TrainerEntity {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       photoUrl: map['photoUrl'],
+      phoneNumber: map['phoneNumber'],  // Eklendi
+      address: map['address'],          // Eklendi
       studentIds: map['studentIds'] != null
           ? List<String>.from(map['studentIds'])
           : null,
@@ -59,6 +66,8 @@ class TrainerModel extends TrainerEntity {
       'name': name,
       'email': email,
       'photoUrl': photoUrl,
+      'phoneNumber': phoneNumber,  // Eklendi
+      'address': address,          // Eklendi
       'studentIds': studentIds,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
@@ -70,6 +79,8 @@ class TrainerModel extends TrainerEntity {
     String? name,
     String? email,
     String? photoUrl,
+    String? phoneNumber,  // Eklendi
+    String? address,      // Eklendi
     List<String>? studentIds,
     DateTime? updatedAt,
   }) {
@@ -78,6 +89,8 @@ class TrainerModel extends TrainerEntity {
       name: name ?? this.name,
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
+      phoneNumber: phoneNumber ?? this.phoneNumber,  // Eklendi
+      address: address ?? this.address,              // Eklendi
       studentIds: studentIds ?? this.studentIds,
       createdAt: this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
