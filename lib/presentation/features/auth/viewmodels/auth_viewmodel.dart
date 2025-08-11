@@ -5,9 +5,7 @@ import '../../../../core/providers/providers.dart';
 import '../../../../domain/repositories/auth_repository.dart';
 import '../../../../domain/repositories/trainer_repository.dart';
 
-final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>((
-  ref,
-) {
+final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   final trainerRepository = ref.watch(trainerRepositoryProvider);
   return AuthViewModel(authRepository, trainerRepository);
@@ -18,7 +16,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
   final TrainerRepository _trainerRepository;
 
   AuthViewModel(this._authRepository, this._trainerRepository)
-    : super(const AuthState.initial()) {
+      : super(const AuthState.initial()) {
     // Başlangıçta auth durumunu kontrol et
     _checkCurrentUser();
   }
@@ -47,10 +45,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
     state = const AuthState.authenticating();
 
     try {
-      final user = await _authRepository.signInWithEmailAndPassword(
-        email,
-        password,
-      );
+      final user = await _authRepository.signInWithEmailAndPassword(email, password);
       final trainer = await _trainerRepository.getTrainerById(user.uid);
 
       if (trainer != null) {
@@ -122,36 +117,36 @@ class AuthState {
   });
 
   const AuthState.initial()
-    : isLoading = true,
-      user = null,
-      trainer = null,
-      errorMessage = null;
+      : isLoading = true,
+        user = null,
+        trainer = null,
+        errorMessage = null;
 
   const AuthState.authenticating()
-    : isLoading = true,
-      user = null,
-      trainer = null,
-      errorMessage = null;
+      : isLoading = true,
+        user = null,
+        trainer = null,
+        errorMessage = null;
 
   const AuthState.unauthenticated()
-    : isLoading = false,
-      user = null,
-      trainer = null,
-      errorMessage = null;
+      : isLoading = false,
+        user = null,
+        trainer = null,
+        errorMessage = null;
 
   const AuthState.authenticated({
     required User user,
     required TrainerEntity trainer,
   }) : isLoading = false,
-       user = user,
-       trainer = trainer,
-       errorMessage = null;
+        user = user,
+        trainer = trainer,
+        errorMessage = null;
 
   const AuthState.error({required String message})
-    : isLoading = false,
-      user = null,
-      trainer = null,
-      errorMessage = message;
+      : isLoading = false,
+        user = null,
+        trainer = null,
+        errorMessage = message;
 
   bool get isAuthenticated => user != null && trainer != null;
 }
