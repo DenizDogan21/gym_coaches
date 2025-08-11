@@ -5,11 +5,11 @@ import 'package:gym_coaches/core/constants/app_constants.dart';
 class AppTheme {
   // Renk tanımları (Light tema için)
   static const Color primaryLight = Color.fromARGB(255, 35, 4, 116);
-  static const Color secondaryLight = Color(0xFFF57C00); 
-  static const Color successLight = Color(0xFF43A047); 
-  static const Color errorLight = Color(0xFFE53935); 
-  static const Color warningLight = Color(0xFFFDD835); 
-  static const Color backgroundLight = Color(0xFFF5F5F5); 
+  static const Color secondaryLight = Color(0xFFF57C00);
+  static const Color successLight = Color(0xFF43A047);
+  static const Color errorLight = Color(0xFFE53935);
+  static const Color warningLight = Color(0xFFFDD835);
+  static const Color backgroundLight = Color(0xFFF5F5F5);
   static const Color surfaceLight = Colors.white;
 
   // Renk tanımları (Dark tema için)

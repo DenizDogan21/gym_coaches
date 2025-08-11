@@ -9,6 +9,8 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final bool isNumeric;
   final String? Function(String?)? validator;
+  final Widget? suffixIcon;
+  final bool enabled;
 
   const CustomTextField({
     Key? key,
@@ -18,6 +20,8 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.isNumeric = false,
     this.validator,
+    this.suffixIcon,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -27,7 +31,8 @@ class CustomTextField extends StatelessWidget {
       keyboardType: isNumeric ? TextInputType.number : keyboardType,
       obscureText: obscureText,
       validator: validator,
-      decoration: InputDecoration(hintText: hintText),
+      enabled: enabled,
+      decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
     );
   }
 }
